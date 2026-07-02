@@ -3,59 +3,53 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Chat.Silomo - Climate.Change</title>
+  <title>Chat Silomo</title>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg-dark:       #c2d4c9;
-      --bg-chat:       #dce6e0;
-      --warm-white:    #ffffff;
-      --primary:       #388e3c;
-      --primary-light: #a5d6a7;
-      --primary-dark:  #1b5e20;
-      --fur-light:     #c8e6c9;
-      --fur-mid:       #a5d6a7;
-      --text-dark:     #0f1f14;
-      --text-mid:      #2b4733;
-      --text-muted:    #587864;
-      --user-bubble:   #b6d7a8;
-      --ai-bubble:     #ffffff;
-      --shadow-soft:   0 2px 12px rgba(27, 94, 32, 0.08);
-      --shadow-card:   0 8px 32px rgba(27, 94, 32, 0.15);
+      --bg-main:     #2d5a3d;
+      --bg-deep:     #1e3d2a;
+      --cream:       #fdf8f2;
+      --warm-white:  #ffffff;
+      --text-dark:   #2d1f0e;
+      --text-mid:    #6b5240;
+      --text-muted:  #a08870;
+      --user-bubble: #fde9b8;
+      --ai-bubble:   #ffffff;
+      --shadow-soft: 0 2px 12px rgba(20,50,30,0.18);
+      --shadow-card: 0 8px 32px rgba(20,50,30,0.28);
+      --green-mid:   #3d7a52;
+      --green-light: #4a9463;
     }
 
     body {
       font-family: 'Noto Sans TC', 'Nunito', sans-serif;
-      background: var(--bg-dark);
+      background: var(--bg-main);
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
+      padding: 10px; /* 為了讓 iPad 上有邊距感 */
     }
 
     /* ══════════════ LOGIN ══════════════ */
     #login-screen {
       width: 100%;
-      max-width: 440px;
+      max-width: 650px; /* 加寬以適應 16:9 iPad */
       background: var(--warm-white);
       border-radius: 28px;
-      padding: 44px 36px 40px;
+      padding: 36px 48px; /* 稍微減少上下 padding，增加左右 padding */
       box-shadow: var(--shadow-card);
       animation: fadeUp 0.55s cubic-bezier(.22,1,.36,1) both;
       position: relative;
       overflow: hidden;
     }
     #login-screen::before {
-      content: '';
-      position: absolute;
-      top: -40px; right: -40px;
-      width: 160px; height: 160px;
-      background: var(--primary-light);
-      border-radius: 50%;
-      opacity: 0.3;
-      pointer-events: none;
+      content: ''; position: absolute; top: -40px; right: -40px;
+      width: 160px; height: 160px; background: radial-gradient(circle, #e8f5ee 0%, transparent 70%);
+      border-radius: 50%; pointer-events: none;
     }
     @keyframes fadeUp {
       from { opacity:0; transform:translateY(28px) scale(0.97); }
@@ -63,354 +57,213 @@
     }
 
     .login-hero {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-bottom: 24px;
-      text-align: center;
-    }
-    .login-hero h1 {
-      font-family: 'Nunito', sans-serif;
-      font-size: 1.8rem;
-      font-weight: 800;
-      color: var(--text-dark);
-      margin-top: 12px;
-      line-height: 1.2;
-    }
-    .login-hero h1 span { color: var(--primary); display: block; font-size: 1.4rem;}
-    .login-hero p {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      margin-top: 8px;
-    }
-
-    .field-label {
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: var(--text-mid);
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-      margin-top: 18px;
-      display: block;
-    }
-
-    /* 選擇按鈕 */
-    .btn-group { display: flex; flex-wrap: wrap; gap: 7px; }
-    .sel-btn {
-      padding: 7px 16px;
-      border: 1.5px solid var(--fur-mid);
-      border-radius: 20px;
-      background: var(--bg-chat);
-      color: var(--text-mid);
-      font-size: 0.88rem;
-      font-family: 'Noto Sans TC', sans-serif;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.18s;
-    }
-    .sel-btn:hover { border-color: var(--primary); color: var(--primary-dark); }
-    .sel-btn.active {
-      background: var(--primary);
-      border-color: var(--primary);
-      color: #fff;
-      box-shadow: 0 2px 8px rgba(56, 142, 60, 0.35);
-    }
-
-    /* 座號按鈕 */
-    .seat-group { display: flex; flex-wrap: wrap; gap: 5px; }
-    .seat-btn {
-      width: 34px; height: 30px;
-      border: 1.5px solid var(--fur-mid);
-      border-radius: 8px;
-      background: var(--bg-chat);
-      color: var(--text-mid);
-      font-size: 0.78rem;
-      font-family: 'Noto Sans TC', sans-serif;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.15s;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .seat-btn:hover { border-color: var(--primary); color: var(--primary-dark); }
-    .seat-btn.active {
-      background: var(--primary);
-      border-color: var(--primary);
-      color: #fff;
-    }
-
-    /* 姓名 */
-    .name-input {
-      width: 100%;
-      padding: 12px 16px;
-      border: 1.5px solid var(--fur-mid);
-      border-radius: 14px;
-      font-size: 0.95rem;
-      font-family: 'Noto Sans TC', sans-serif;
-      color: var(--text-dark);
-      background: var(--bg-chat);
-      outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-    .name-input:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(56, 142, 60, 0.15);
+      display: flex; flex-direction: column; align-items: center;
+      margin-bottom: 16px; /* 減少高度佔用 */
     }
     
-    /* 使用須知 Checkbox */
-    .checkbox-group {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 10px;
-      background: var(--fur-light);
-      padding: 12px 16px;
-      border-radius: 12px;
-      border: 1px dashed var(--primary-light);
+    .avatar-icon-lg {
+      width: 70px; height: 70px; /* 稍微縮小一點 */
+      background: var(--green-light); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 12px rgba(61,122,82,0.3); padding: 8px;
     }
-    .checkbox-label {
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-      font-size: 0.85rem;
-      color: var(--text-dark);
-      cursor: pointer;
-      line-height: 1.4;
+
+    .login-hero h1 {
+      font-family: 'Nunito', sans-serif; font-size: 1.8rem; font-weight: 800;
+      color: var(--text-dark); margin-top: 12px; letter-spacing: -0.02em;
     }
-    .checkbox-label input[type="checkbox"] {
-      margin-top: 2px;
-      accent-color: var(--primary);
-      cursor: pointer;
+    .login-hero h1 span { color: var(--green-mid); }
+    
+    .login-hero h2 {
+      font-family: 'Nunito', sans-serif; font-size: 1.1rem; font-weight: 700;
+      color: var(--green-light); margin-top: 2px; letter-spacing: 0.02em;
+    }
+    
+    .login-hero p { font-size: 0.85rem; color: var(--text-muted); margin-top: 4px; }
+
+    .field-label {
+      font-size: 0.75rem; font-weight: 700; color: var(--text-mid);
+      letter-spacing: 0.07em; text-transform: uppercase;
+      margin-bottom: 6px; margin-top: 14px; display: block; /* 減少 margin-top */
+    }
+
+    .btn-group { display: flex; flex-wrap: wrap; gap: 8px; }
+    .sel-btn {
+      padding: 7px 18px; border: 1.5px solid #e8d5bb; border-radius: 20px;
+      background: var(--cream); color: var(--text-mid); font-size: 0.88rem; font-weight: 600;
+      cursor: pointer; transition: all 0.18s; flex-grow: 1; /* 讓按鈕平均分配寬度 */
+      text-align: center;
+    }
+    .sel-btn:hover { border-color: var(--green-mid); color: var(--green-mid); background: #e8f5ee; }
+    .sel-btn.active { background: var(--green-mid); border-color: var(--green-mid); color: #fff; box-shadow: 0 2px 8px rgba(61,122,82,0.35); }
+
+    .seat-group { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-start; }
+    .seat-btn {
+      width: 38px; height: 32px; /* 稍微變寬適應大寬度 */
+      border: 1.5px solid #e8d5bb; border-radius: 8px;
+      background: var(--cream); color: var(--text-mid); font-size: 0.78rem; font-weight: 600;
+      cursor: pointer; transition: all 0.15s; display: flex; align-items: center; justify-content: center;
+    }
+    .seat-btn:hover { border-color: var(--green-mid); color: var(--green-mid); background: #e8f5ee; }
+    .seat-btn.active { background: var(--green-mid); border-color: var(--green-mid); color: #fff; }
+
+    .name-input {
+      width: 100%; padding: 10px 16px; border: 1.5px solid #e8d5bb; border-radius: 12px;
+      font-size: 0.95rem; color: var(--text-dark); background: var(--cream);
+      outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .name-input:focus { border-color: var(--green-mid); box-shadow: 0 0 0 3px rgba(61,122,82,0.15); }
+
+    .consent-group {
+      margin-top: 16px; display: flex; flex-direction: column; gap: 8px;
+      background: #f9f9f9; padding: 10px 16px; border-radius: 12px; border: 1px dashed #e0e0e0;
+    }
+    .consent-label {
+      display: flex; align-items: flex-start; font-size: 0.85rem; color: var(--text-mid);
+      cursor: pointer; line-height: 1.4; font-weight: 600;
+    }
+    .consent-label input[type="checkbox"] {
+      margin-right: 10px; margin-top: 2px; width: 16px; height: 16px;
+      accent-color: var(--green-mid); cursor: pointer; flex-shrink: 0;
     }
 
     #login-btn {
-      width: 100%;
-      padding: 14px;
-      margin-top: 24px;
-      background: var(--primary);
-      color: #fff;
-      font-size: 1rem;
-      font-weight: 800;
-      font-family: 'Nunito', sans-serif;
-      border: none;
-      border-radius: 16px;
-      cursor: pointer;
-      letter-spacing: 0.04em;
+      width: 100%; padding: 14px; margin-top: 18px;
+      background: var(--green-mid); color: #fff;
+      font-size: 1rem; font-weight: 800; border: none; border-radius: 16px;
+      cursor: pointer; letter-spacing: 0.04em;
       transition: background 0.2s, transform 0.12s, box-shadow 0.2s;
-      box-shadow: 0 4px 16px rgba(56, 142, 60, 0.35);
+      box-shadow: 0 4px 16px rgba(61,122,82,0.35);
     }
-    #login-btn:hover  { background: var(--primary-dark); }
+    #login-btn:hover  { background: var(--bg-deep); }
     #login-btn:active { transform: scale(0.98); }
 
     /* ══════════════ CHAT ══════════════ */
     #chat-screen {
       display: none;
       flex-direction: column;
-      width: 100%;
-      max-width: 600px;
+      width: 100%; 
+      max-width: 850px; /* 加寬對話畫面 */
       height: 100vh;
       background: var(--warm-white);
-      box-shadow: 0 0 40px rgba(27, 94, 32, 0.15);
+      box-shadow: var(--shadow-card);
+    }
+
+    /* 針對平板以上的橫向畫面優化：讓對話框變成懸浮視窗 */
+    @media (min-width: 768px) {
+      #chat-screen {
+        height: 92vh;
+        border-radius: 24px;
+        overflow: hidden;
+      }
+      body { padding: 20px; }
     }
 
     .chat-header {
-      background: var(--bg-chat);
-      border-bottom: 1.5px solid var(--fur-mid);
-      padding: 14px 20px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
+      background: linear-gradient(135deg, #2d5a3d 0%, #1e3d2a 100%);
+      border-bottom: 1.5px solid #1a3325;
+      padding: 14px 24px; display: flex; align-items: center; gap: 14px;
     }
     .header-name-block { flex: 1; }
-    .header-title {
-      font-family: 'Nunito', sans-serif;
-      font-size: 1.1rem;
-      font-weight: 800;
-      color: var(--text-dark);
-      letter-spacing: -0.01em;
-    }
-    .header-title span { color: var(--primary); }
-    .header-sub { font-size: 0.75rem; color: var(--text-muted); margin-top: 1px; }
+    .header-title { font-size: 1.2rem; font-weight: 800; color: #ffffff; }
+    .header-title span { color: #7fcf9a; }
+    .header-sub { font-size: 0.8rem; color: #9ecfb0; margin-top: 2px; }
 
     .turn-badge {
-      background: var(--warm-white);
-      border: 1.5px solid var(--fur-mid);
-      border-radius: 20px;
-      padding: 4px 14px;
-      font-size: 0.78rem;
-      font-weight: 700;
-      color: var(--primary-dark);
-      font-family: 'Nunito', sans-serif;
+      background: rgba(255,255,255,0.15); border: 1.5px solid rgba(255,255,255,0.25);
+      border-radius: 20px; padding: 4px 14px; font-size: 0.85rem; font-weight: 700; color: #c5ecd5;
     }
 
-    /* 對話區 */
     #chat-history {
-      flex: 1;
-      overflow-y: auto;
-      padding: 20px 16px;
-      background: var(--bg-chat);
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
+      flex: 1; overflow-y: auto; padding: 24px 20px; background: #f0f7f2;
+      display: flex; flex-direction: column; gap: 8px;
     }
-    #chat-history::-webkit-scrollbar { width: 4px; }
-    #chat-history::-webkit-scrollbar-thumb { background: var(--fur-mid); border-radius: 4px; }
+    #chat-history::-webkit-scrollbar { width: 6px; }
+    #chat-history::-webkit-scrollbar-thumb { background: #b5d4c0; border-radius: 6px; }
 
-    /* 泡泡列 */
-    .bubble-row {
-      display: flex;
-      align-items: flex-end;
-      gap: 8px;
-      animation: popIn 0.22s cubic-bezier(.22,1,.36,1) both;
-    }
+    .bubble-row { display: flex; align-items: flex-end; gap: 10px; animation: popIn 0.22s ease-out both; }
     .bubble-row.user-row { flex-direction: row-reverse; }
 
     @keyframes popIn {
-      from { opacity:0; transform:scale(0.93) translateY(6px); }
+      from { opacity:0; transform:scale(0.95) translateY(8px); }
       to   { opacity:1; transform:scale(1) translateY(0); }
     }
 
     .bubble {
-      max-width: 72%;
-      padding: 11px 15px;
-      border-radius: 18px;
-      line-height: 1.7;
-      font-size: 0.93rem;
-      word-wrap: break-word;
-      box-shadow: var(--shadow-soft);
+      max-width: 75%; padding: 12px 18px; border-radius: 18px; line-height: 1.7;
+      font-size: 0.95rem; word-wrap: break-word; box-shadow: var(--shadow-soft);
     }
-    .user-bubble {
-      background: var(--user-bubble);
-      border-bottom-right-radius: 4px;
-      color: var(--text-dark);
-    }
-    .ai-bubble {
-      background: var(--ai-bubble);
-      border-bottom-left-radius: 4px;
-      color: var(--text-dark);
-    }
+    .user-bubble { background: var(--green-mid); border-bottom-right-radius: 4px; color: #ffffff; }
+    .ai-bubble { background: var(--ai-bubble); border-bottom-left-radius: 4px; color: var(--text-dark); border: 1px solid #d4e8da; }
     .ai-bubble p  { margin-bottom: 8px; }
-    .ai-bubble ul { margin: 6px 0 0 16px; }
+    .ai-bubble p:last-child { margin-bottom: 0; }
+    .ai-bubble ul { margin: 6px 0 0 18px; }
     .ai-bubble li { margin-bottom: 7px; }
 
     .typing-indicator { color: var(--text-muted); font-style: italic; font-size: 0.85rem; }
 
-    .silomo-avatar-sm { width: 40px; height: 40px; flex-shrink: 0; }
-    .user-avatar {
-      width: 36px; height: 36px;
-      background: var(--warm-white);
-      border-radius: 50%;
-      border: 1.5px solid var(--fur-mid);
+    .avatar-icon-sm {
+      width: 38px; height: 38px; flex-shrink: 0; border-radius: 50%; padding: 4px;
+      background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,0.12);
       display: flex; align-items: center; justify-content: center;
-      font-size: 16px;
-      flex-shrink: 0;
     }
-    .silomo-avatar-lg { width: 96px; height: 96px; }
-
-    .date-divider {
-      align-self: center;
-      font-size: 0.72rem;
-      color: var(--text-muted);
-      background: rgba(165, 214, 167, 0.4);
-      padding: 3px 14px;
-      border-radius: 20px;
-      margin: 4px 0 8px;
-      font-weight: 600;
+    .user-avatar {
+      width: 36px; height: 36px; flex-shrink: 0; border-radius: 50%;
+      background: var(--green-light); border: 1.5px solid var(--green-mid);
+      display: flex; align-items: center; justify-content: center; font-size: 16px;
     }
 
     #status-msg {
-      display: none;
-      text-align: center;
-      font-size: 0.83rem;
-      color: #1b5e20;
-      background: #c8e6c9;
-      padding: 9px 16px;
-      border-top: 1px solid #a5d6a7;
-      font-weight: 600;
+      display: none; text-align: center; font-size: 0.9rem; color: #1e4a2a;
+      background: #c5e8d0; padding: 10px 16px; border-top: 1px solid #9ecfb0; font-weight: 600;
     }
 
     .input-area {
-      display: flex;
-      align-items: center;
-      padding: 10px 14px;
-      background: var(--warm-white);
-      border-top: 1.5px solid var(--fur-mid);
-      gap: 10px;
+      display: flex; align-items: center; padding: 14px 18px;
+      background: #e8f5ee; border-top: 1.5px solid #b5d4c0; gap: 12px;
     }
     .input-area input {
-      flex: 1;
-      padding: 11px 18px;
-      border: 1.5px solid var(--fur-mid);
-      border-radius: 24px;
-      font-size: 0.95rem;
-      font-family: 'Noto Sans TC', sans-serif;
-      background: var(--bg-chat);
-      outline: none;
-      color: var(--text-dark);
+      flex: 1; padding: 12px 20px; border: 1.5px solid #b5d4c0; border-radius: 24px;
+      font-size: 1rem; background: var(--warm-white); outline: none; color: var(--text-dark);
       transition: border-color 0.2s, box-shadow 0.2s;
     }
-    .input-area input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(56, 142, 60, 0.12); }
-    .input-area input:disabled { background: var(--fur-light); cursor: not-allowed; color: var(--text-muted); }
+    .input-area input:focus { border-color: var(--green-mid); box-shadow: 0 0 0 3px rgba(61,122,82,0.12); }
+    .input-area input:disabled { background: #d4eadb; cursor: not-allowed; color: var(--text-muted); }
 
     #send-btn {
-      width: 44px; height: 44px;
-      background: var(--primary);
-      color: #fff;
-      border: none;
-      border-radius: 50%;
-      font-size: 17px;
-      cursor: pointer;
+      width: 48px; height: 48px; flex-shrink: 0; background: var(--green-mid); color: #fff;
+      border: none; border-radius: 50%; font-size: 18px; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
       transition: background 0.18s, transform 0.1s, box-shadow 0.18s;
-      box-shadow: 0 3px 10px rgba(56, 142, 60, 0.35);
-      flex-shrink: 0;
+      box-shadow: 0 3px 10px rgba(61,122,82,0.35);
     }
-    #send-btn:hover  { background: var(--primary-dark); }
+    #send-btn:hover  { background: var(--bg-deep); }
     #send-btn:active { transform: scale(0.92); }
-    #send-btn:disabled { background: var(--fur-mid); box-shadow: none; cursor: not-allowed; }
+    #send-btn:disabled { background: #b5d4c0; box-shadow: none; cursor: not-allowed; }
   </style>
 </head>
 <body>
 
-<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
-  <symbol id="silomo" viewBox="0 0 100 100">
-    <circle cx="50" cy="52" r="46" fill="#a5d6a7" opacity="0.25"/>
-    <polygon points="12,40 18,12 38,28" fill="#fcfdfd"/>
-    <polygon points="88,40 82,12 62,28" fill="#fcfdfd"/>
-    <polygon points="18,36 22,20 32,28" fill="#f2d5d5"/>
-    <polygon points="82,36 78,20 68,28" fill="#f2d5d5"/>
-    <ellipse cx="50" cy="56" rx="44" ry="36" fill="#ffffff"/>
-    <ellipse cx="25" cy="65" rx="14" ry="12" fill="#ffffff"/>
-    <ellipse cx="75" cy="65" rx="14" ry="12" fill="#ffffff"/>
-    <circle cx="34" cy="52" r="8.5" fill="#2a1a08"/>
-    <circle cx="66" cy="52" r="8.5" fill="#2a1a08"/>
-    <circle cx="34" cy="52" r="7.5" fill="#c48a21"/>
-    <circle cx="66" cy="52" r="7.5" fill="#c48a21"/>
-    <ellipse cx="34" cy="52" rx="3" ry="5.5" fill="#1a0f00"/>
-    <ellipse cx="66" cy="52" rx="3" ry="5.5" fill="#1a0f00"/>
-    <circle cx="36" cy="49" r="2" fill="#ffffff"/>
-    <circle cx="68" cy="49" r="2" fill="#ffffff"/>
-    <path d="M 22 45 L 45 51 L 45 35 L 22 35 Z" fill="#ffffff"/>
-    <path d="M 78 45 L 55 51 L 55 35 L 78 35 Z" fill="#ffffff"/>
-    <polygon points="46,65 54,65 50,69" fill="#eeabaa"/>
-    <line x1="50" y1="69" x2="50" y2="73" stroke="#d6a3a3" stroke-width="1.5"/>
-    <path d="M 43 75 Q 50 78 50 73" stroke="#d6a39d" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-    <path d="M 57 75 Q 50 78 50 73" stroke="#d6a39d" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-    <path d="M 20 85 Q 50 96 80 85" stroke="#e6eae8" stroke-width="2" fill="none"/>
-    <path d="M 30 68 Q 15 70 5 82" stroke="#e0e6e3" stroke-width="1.5" fill="none"/>
-    <path d="M 30 73 Q 15 76 8 88" stroke="#e0e6e3" stroke-width="1.5" fill="none"/>
-    <path d="M 70 68 Q 85 70 95 82" stroke="#e0e6e3" stroke-width="1.5" fill="none"/>
-    <path d="M 70 73 Q 85 76 92 88" stroke="#e0e6e3" stroke-width="1.5" fill="none"/>
-  </symbol>
-</svg>
-
+<!-- ═══════════ 登入畫面 ═══════════ -->
 <div id="login-screen">
   <div class="login-hero">
-    <svg class="silomo-avatar-lg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-      <use href="#silomo"/>
-    </svg>
-    <h1>Chat.Silomo<br><span>Climate.Change</span></h1>
-    <p>你的氣候探究夥伴・Silomo老師 🐾</p>
+    <div class="avatar-icon-lg">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+        <!-- 耳朵與毛茸茸的臉 -->
+        <path d="M15 15 L32 35 Q50 28 68 35 L85 15 L78 42 Q92 65 75 85 Q50 95 25 85 Q8 65 22 42 Z" fill="#ffffff" stroke="#dcdcdc" stroke-width="3" stroke-linejoin="round"/>
+        <!-- 黃色眼珠 -->
+        <circle cx="38" cy="55" r="7" fill="#FFD700" />
+        <circle cx="62" cy="55" r="7" fill="#FFD700" />
+        <!-- 細長瞳孔 -->
+        <ellipse cx="38" cy="55" rx="2" ry="6" fill="#222" />
+        <ellipse cx="62" cy="55" rx="2" ry="6" fill="#222" />
+        <!-- 粉色鼻子 -->
+        <path d="M47 68 L53 68 L50 73 Z" fill="#FFA07A" />
+      </svg>
+    </div>
+    <h1>Chat <span>Silomo</span></h1>
+    <h2>Climate.Change</h2>
+    <p>你的AI學習夥伴</p>
   </div>
 
   <span class="field-label">年級</span>
@@ -434,37 +287,44 @@
   <div class="seat-group" id="seat-group"></div>
 
   <span class="field-label">姓名</span>
-  <input class="name-input" type="text" id="studentName" placeholder="例如:王小明">
+  <input class="name-input" type="text" id="studentName" placeholder="例如：王大明">
 
-  <span class="field-label">使用須知</span>
-  <div class="checkbox-group">
-    <label class="checkbox-label">
-      <input type="checkbox" id="rule1"> 我同意遵守數位學習規範，發言保持禮貌。
+  <div class="consent-group">
+    <label class="consent-label">
+      <input type="checkbox" id="consent-ai">
+      <span>Chat Silomo是AI，可能會出錯。</span>
     </label>
-    <label class="checkbox-label">
-      <input type="checkbox" id="rule2"> 我同意將學習歷程作為教學與探究活動使用。
+    <label class="consent-label">
+      <input type="checkbox" id="consent-record">
+      <span>你與Chat Silomo的對話紀錄，老師都可以查閱。</span>
     </label>
   </div>
 
-  <button id="login-btn" onclick="startChat()">🐾 進入 Chat Silomo</button>
+  <button id="login-btn" onclick="startChat()">進入 Chat Silomo</button>
 </div>
 
+<!-- ═══════════ 聊天畫面 ═══════════ -->
 <div id="chat-screen">
   <div class="chat-header">
-    <svg class="silomo-avatar-sm" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-      <use href="#silomo"/>
-    </svg>
+    <div class="avatar-icon-sm" style="box-shadow:none; padding: 0;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+        <path d="M15 15 L32 35 Q50 28 68 35 L85 15 L78 42 Q92 65 75 85 Q50 95 25 85 Q8 65 22 42 Z" fill="#ffffff" stroke="#dcdcdc" stroke-width="3" stroke-linejoin="round"/>
+        <circle cx="38" cy="55" r="7" fill="#FFD700" />
+        <circle cx="62" cy="55" r="7" fill="#FFD700" />
+        <ellipse cx="38" cy="55" rx="2" ry="6" fill="#222" />
+        <ellipse cx="62" cy="55" rx="2" ry="6" fill="#222" />
+        <path d="M47 68 L53 68 L50 73 Z" fill="#FFA07A" />
+      </svg>
+    </div>
     <div class="header-name-block">
-      <div class="header-title">Chat.Silomo <span>Climate</span></div>
+      <div class="header-title">Chat <span>Silomo</span></div>
       <div class="header-sub" id="display-user"></div>
     </div>
     <div class="turn-badge" id="turn-badge">第 1 / 4 次</div>
   </div>
 
-  <div id="chat-history">
-    <div class="date-divider">✦ 氣候變遷・探究任務開始 ✦</div>
-  </div>
-
+  <div id="chat-history"></div>
+  
   <div id="status-msg"></div>
 
   <div class="input-area">
@@ -480,11 +340,19 @@
   let userInfo = {};
   let turnCount = 1;
   let conversationHistory = [];
-  const MAX_TURNS = 4; // 互動次數已修改為 4 次
+  const MAX_TURNS = 4;
 
-  // 後端 Render API 網址 (請替換為您 Python 實際的 endpoint)
-  const PYTHON_API_URL = "https://your-python-app.onrender.com/api/chat"; 
+  const catSvgString = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+      <path d="M15 15 L32 35 Q50 28 68 35 L85 15 L78 42 Q92 65 75 85 Q50 95 25 85 Q8 65 22 42 Z" fill="#ffffff" stroke="#dcdcdc" stroke-width="3" stroke-linejoin="round"/>
+      <circle cx="38" cy="55" r="7" fill="#FFD700" />
+      <circle cx="62" cy="55" r="7" fill="#FFD700" />
+      <ellipse cx="38" cy="55" rx="2" ry="6" fill="#222" />
+      <ellipse cx="62" cy="55" rx="2" ry="6" fill="#222" />
+      <path d="M47 68 L53 68 L50 73 Z" fill="#FFA07A" />
+    </svg>`;
 
+  // 建立座號按鈕 1~34
   (function buildSeats() {
     const g = document.getElementById('seat-group');
     for (let i = 1; i <= 34; i++) {
@@ -518,14 +386,18 @@
 
   function startChat() {
     const n = document.getElementById('studentName').value.trim();
-    const r1 = document.getElementById('rule1').checked;
-    const r2 = document.getElementById('rule2').checked;
-
     if (!selectedGrade) { alert('請選擇年級！'); return; }
     if (!selectedClass) { alert('請選擇班級！'); return; }
     if (!selectedSeat)  { alert('請選擇座號！'); return; }
     if (!n)             { alert('請輸入姓名！'); return; }
-    if (!r1 || !r2)     { alert('請閱讀並勾選兩項「使用須知」！'); return; }
+    
+    // 驗證勾選事項
+    const checkAI = document.getElementById('consent-ai').checked;
+    const checkRecord = document.getElementById('consent-record').checked;
+    if (!checkAI || !checkRecord) {
+      alert('請詳閱並勾選所有的注意事項，才能進入 Chat Silomo！');
+      return;
+    }
 
     const classNum = formatClassNum();
     userInfo = { classNum, seatNum: selectedSeat, studentName: n };
@@ -534,36 +406,33 @@
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('chat-screen').style.display  = 'flex';
 
-    addAiBubble('<p>你好！我是 <b>Silomo</b></p><p>準備好探索氣候變遷了嗎？本次任務有 <b>4 次</b>對話機會，請開始發問吧！</p>', true);
-    document.getElementById('chat-input').focus();
+    addAiBubble('<p>你好！我是 <b>Silomo</b></p><p>這次學習任務你有 <b>4 次</b>對話機會！請開始吧！</p>', true);
+    setTimeout(() => document.getElementById('chat-input').focus(), 100);
   }
 
+  // ── Cat Silomo 泡泡 ──
   function addAiBubble(content, isHTML) {
     const history = document.getElementById('chat-history');
     const row = document.createElement('div');
     row.className = 'bubble-row';
 
-    const svgNS = 'http://www.w3.org/2000/svg';
-    const svg = document.createElementNS(svgNS, 'svg');
-    svg.setAttribute('class', 'silomo-avatar-sm');
-    svg.setAttribute('viewBox', '0 0 100 100');
-    const use = document.createElementNS(svgNS, 'use');
-    use.setAttributeNS('http://www.w3.org/1999/xlink', 'href', '#silomo');
-    use.setAttribute('href', '#silomo');
-    svg.appendChild(use);
+    const avatar = document.createElement('div');
+    avatar.className = 'avatar-icon-sm';
+    avatar.innerHTML = catSvgString;
 
     const bubble = document.createElement('div');
     bubble.className = 'bubble ai-bubble';
     if (isHTML) bubble.innerHTML = content;
     else        bubble.innerText  = content;
 
-    row.appendChild(svg);
+    row.appendChild(avatar);
     row.appendChild(bubble);
     history.appendChild(row);
     history.scrollTop = history.scrollHeight;
     return row;
   }
 
+  // ── 使用者泡泡 ──
   function addUserBubble(content) {
     const history = document.getElementById('chat-history');
     const row = document.createElement('div');
@@ -583,24 +452,21 @@
     history.scrollTop = history.scrollHeight;
   }
 
+  // ── 載入動畫泡泡 ──
   function addLoadingBubble() {
     const history = document.getElementById('chat-history');
     const row = document.createElement('div');
     row.className = 'bubble-row';
 
-    const svgNS = 'http://www.w3.org/2000/svg';
-    const svg = document.createElementNS(svgNS, 'svg');
-    svg.setAttribute('class', 'silomo-avatar-sm');
-    svg.setAttribute('viewBox', '0 0 100 100');
-    const use = document.createElementNS(svgNS, 'use');
-    use.setAttribute('href', '#silomo');
-    svg.appendChild(use);
+    const avatar = document.createElement('div');
+    avatar.className = 'avatar-icon-sm';
+    avatar.innerHTML = catSvgString;
 
     const bubble = document.createElement('div');
     bubble.className = 'bubble ai-bubble typing-indicator';
     bubble.innerText = 'Silomo 正在思考中…';
 
-    row.appendChild(svg);
+    row.appendChild(avatar);
     row.appendChild(bubble);
     history.appendChild(row);
     history.scrollTop = history.scrollHeight;
@@ -611,14 +477,14 @@
     const badge = document.getElementById('turn-badge');
     if (turnCount > MAX_TURNS) {
       badge.textContent = '已結束';
-      badge.style.background = '#c8e6c9';
-      badge.style.color = '#1b5e20';
+      badge.style.background = 'rgba(255,255,255,0.08)';
+      badge.style.color = '#f0c0a0';
     } else {
       badge.textContent = `第 ${turnCount} / ${MAX_TURNS} 次`;
     }
   }
 
-  async function sendMessage() {
+  function sendMessage() {
     if (turnCount > MAX_TURNS) return;
 
     const input   = document.getElementById('chat-input');
@@ -635,66 +501,63 @@
 
     conversationHistory.push({ role: "user", parts: msg });
 
-    try {
-      const response = await fetch(PYTHON_API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          userInfo: userInfo,
-          message: msg,
-          turnCount: turnCount,
-          history: conversationHistory
-        })
-      });
+    google.script.run
+      .withSuccessHandler(res => {
+        loadingRow.remove();
 
-      const res = await response.json();
-      loadingRow.remove();
-
-      if (res.status === 'success') {
-        let finalHtml = "";
-        try {
-          const aiData = JSON.parse(res.ai_response);
-          if (aiData.summary) finalHtml += `<p>${aiData.summary}</p>`;
-          if (aiData.details && Array.isArray(aiData.details) && aiData.details.length > 0) {
-            finalHtml += "<ul>";
-            aiData.details.forEach(item => {
-              if (item.point && item.description) {
-                finalHtml += `<li><b>${item.point}：</b>${item.description}</li>`;
-              }
-            });
-            finalHtml += "</ul>";
+        if (res.status === 'success') {
+          let finalHtml = "";
+          try {
+            const aiData = JSON.parse(res.ai_response);
+            if (aiData.summary) {
+              finalHtml += `<p>${aiData.summary}</p>`;
+            }
+            if (aiData.details && Array.isArray(aiData.details) && aiData.details.length > 0) {
+              finalHtml += "<ul>";
+              aiData.details.forEach(item => {
+                if (item.point && item.description) {
+                  finalHtml += `<li><b>${item.point}：</b>${item.description}</li>`;
+                }
+              });
+              finalHtml += "</ul>";
+            }
+            if (!finalHtml) finalHtml = res.ai_response.replace(/\n/g, '<br>');
+          } catch (e) {
+            finalHtml = res.ai_response.replace(/\n/g, '<br>');
           }
-          if (!finalHtml) finalHtml = res.ai_response.replace(/\n/g, '<br>');
-        } catch (e) {
-          finalHtml = res.ai_response.replace(/\n/g, '<br>');
-        }
 
-        addAiBubble(finalHtml, true);
-        conversationHistory.push({ role: "model", parts: res.ai_response });
+          addAiBubble(finalHtml, true);
+          conversationHistory.push({ role: "model", parts: res.ai_response });
 
-        turnCount++;
-        updateBadge();
+          turnCount++;
+          updateBadge();
 
-        if (turnCount > MAX_TURNS) {
-          const statusBox = document.getElementById('status-msg');
-          statusBox.innerText = '⚠️ 已達到本次任務的 4 次互動上限，無法繼續發問。';
-          statusBox.style.display = 'block';
-          input.placeholder = '互動已結束';
+          if (turnCount > MAX_TURNS) {
+            const statusBox = document.getElementById('status-msg');
+            statusBox.innerText = '⚠️ 已達到本次任務的 4 次互動上限，無法繼續發問。';
+            statusBox.style.display = 'block';
+            input.placeholder = '互動已結束';
+          } else {
+            input.disabled   = false;
+            sendBtn.disabled = false;
+            input.focus();
+          }
+
         } else {
+          addAiBubble('發生錯誤：' + res.message, false);
+          conversationHistory.pop();
           input.disabled   = false;
           sendBtn.disabled = false;
-          input.focus();
         }
-      } else {
-        throw new Error(res.message || "發生未知錯誤");
-      }
-    } catch (err) {
-      loadingRow.remove();
-      addAiBubble('系統連線失敗，請確認後台伺服器狀態。', false);
-      conversationHistory.pop();
-      input.disabled   = false;
-      sendBtn.disabled = false;
-    }
+      })
+      .withFailureHandler(err => {
+        loadingRow.remove();
+        addAiBubble('系統連線失敗，請稍後再試。', false);
+        conversationHistory.pop();
+        input.disabled   = false;
+        sendBtn.disabled = false;
+      })
+      .handleChatLogic(userInfo, msg, turnCount, conversationHistory);
   }
 
   document.addEventListener('DOMContentLoaded', () => {
