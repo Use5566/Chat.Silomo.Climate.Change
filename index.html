@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chat.Silomo - Climate.Change</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      var(--bg-dark):       #c2d4c9;
+      --bg-chat:       #dce6e0;
+      --warm-white:    #ffffff;
+      --primary:       #388e3c;
+      --primary-light: #a5d6a7;
+      --primary-dark:  #1b5e20;
+      --fur-light:     #c8e6c9;
+      --fur-mid:       #a5d6a7;
+      --text-dark:     #0f1f14;
+      --text-mid:      #2b4733;
+      --text-muted:    #587864;
+      --user-bubble:   #b6d7a8;
+      --ai-bubble:     #ffffff;
+      --shadow-soft:   0 2px 12px rgba(27, 94, 32, 0.08);
+      --shadow-card:   0 8px 32px rgba(27, 94, 32, 0.15);
+    }
+
+    body {
+      font-family: 'Noto Sans TC', 'Nunito', sans-serif;
+      background: var(--bg-dark);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    /* ══════════════ LOGIN ══════════════ */
+    #login-screen {
+      width: 100%;
+      max-width: 440px;
+      background: var(--warm-white);
+      border-radius: 28px;
+      padding: 44px 36px 40px;
+      box-shadow: var(--shadow-card);
+      animation: fadeUp 0.55s cubic-bezier(.22,1,.36,1) both;
+      position: relative;
+      overflow: hidden;
+    }
+    #login-screen::before {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 160px; height: 160px;
+      background: var(--primary-light);
+      border-radius: 50%;
+      opacity: 0.3;
+      pointer-events: none;
+    }
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(28px) scale(0.97); }
+      to   { opacity:1; transform:translateY(0) scale(1); }
+    }
+
+    .login-hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    .login-hero h1 {
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-top: 12px;
+      line-height: 1.2;
+    }
+    .login-hero h1 span { color: var(--primary); display: block; font-size: 1.4rem;}
+    .login-hero p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+
+    .field-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-mid);
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      margin-top: 18px;
+      display: block;
+    }
+
+    /* 選擇按鈕 */
+    .btn-group { display: flex; flex-wrap: wrap; gap: 7px; }
+    .sel-btn {
+      padding: 7px 16px;
+      border: 1.5px solid var(--fur-mid);
+      border-radius: 20px;
+      background: var(--bg-chat);
+      color: var(--text-mid);
+      font-size: 0.88rem;
+      font-family: 'Noto Sans TC', sans-serif;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.18s;
+    }
+    .sel-btn:hover { border-color: var(--primary); color: var(--primary-dark); }
+    .sel-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(56, 142, 60, 0.35);
+    }
+
+    /* 座號按鈕 */
+    .seat-group { display: flex; flex-wrap: wrap; gap: 5px; }
+    .seat-btn {
+      width: 34px; height: 30px;
+      border: 1.5px solid var(--fur-mid);
+      border-radius: 8px;
+      background: var(--bg-chat);
+      color: var(--text-mid);
+      font-size: 0.78rem;
+      font-family: 'Noto Sans TC', sans-serif;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .seat-btn:hover { border-color: var(--primary); color: var(--primary-dark); }
+    .seat-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    /* 姓名 */
+    .name-input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.5px solid var(--fur-mid);
+      border-radius: 14px;
+      font-size: 0.95rem;
+      font-family: 'Noto Sans TC', sans-serif;
+      color: var(--text-dark);
+      background: var(--bg-chat);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .name-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(56, 142, 60, 0.15);
+    }
+    
+    /* 使用須知 Checkbox */
+    .checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+      background: var(--fur-light);
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1px dashed var(--primary-light);
+    }
+    .checkbox-label {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: var(--text-dark);
+      cursor: pointer;
+      line-height: 1.4;
+    }
+    .checkbox-label input[type="checkbox"] {
+      margin-top: 2px;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+    #login-btn {
+      width: 100%;
+      padding: 14px;
+      margin-top: 24px;
+      background: var(--primary);
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 800;
+      font-family: 'Nunito', sans-serif;
+      border: none;
+      border-radius: 16px;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      transition: background 0.2s, transform 0.12s, box-shadow 0.2s;
+      box-shadow: 0 4px 16px rgba(56, 142, 60, 0.35);
+    }
+    #login-btn:hover  { background: var(--primary-dark); }
+    #login-btn:active { transform: scale(0.98); }
+
+    /* ══════════════ CHAT ══════════════ */
+    #chat-screen {
+      display: none;
+      flex-direction: column;
+      width: 100%;
+      max-width: 600px;
+      height: 100vh;
+      background: var(--warm-white);
+      box-shadow: 0 0 40px rgba(27, 94, 32, 0.15);
+    }
+
+    .chat-header {
+      background: var(--bg-chat);
+      border-bottom: 1.5px solid var(--fur-mid);
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .header-name-block { flex: 1; }
+    .header-title {
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      letter-spacing: -0.01em;
+    }
+    .header-title span { color: var(--primary); }
+    .header-sub { font-size: 0.75rem; color: var(--text-muted); margin-top: 1px; }
+
+    .turn-badge {
+      background: var(--warm-white);
+      border: 1.5px solid var(--fur-mid);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+      font-family: 'Nunito', sans-serif;
+    }
+
+    /* 對話區 */
+    #chat-history {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 16px;
+      background: var(--bg-chat);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    #chat-history::-webkit-scrollbar { width: 4px; }
+    #chat-history::-webkit-scrollbar-thumb { background: var(--fur-mid); border-radius: 4px; }
+
+    /* 泡泡列 */
+    .bubble-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      animation: popIn 0.22s cubic-bezier(.22,1,.36,1) both;
+    }
+    .bubble-row.user-row { flex-direction: row-reverse; }
+
+    @keyframes popIn {
+      from { opacity:0; transform:scale(0.93) translateY(6px); }
+      to   { opacity:1; transform:scale(1) translateY(0); }
+    }
+
+    .bubble {
+      max-width: 72%;
+      padding: 11px 15px;
+      border-radius: 18px;
+      line-height: 1.7;
+      font-size: 0.93rem;
+      word-wrap: break-word;
+      box-shadow: var(--shadow-soft);
+    }
+    .user-bubble {
+      background: var(--user-bubble);
+      border-bottom-right-radius: 4px;
+      color: var(--text-dark);
+    }
+    .ai-bubble {
+      background: var(--ai-bubble);
+      border-bottom-left-radius: 4px;
+      color: var(--text-dark);
+    }
+    .ai-bubble p  { margin-bottom: 8px; }
+    .ai-bubble ul { margin: 6px 0 0 16px; }
+    .ai-bubble li { margin-bottom: 7px; }
+
+    .typing-indicator { color: var(--text-muted); font-style: italic; font-size: 0.85rem; }
+
+    .silomo-avatar-sm { width: 40px; height: 40px; flex-shrink: 0; }
+    .user-avatar {
+      width: 36px; height: 36px;
+      background: var(--warm-white);
+      border-radius: 50%;
+      border: 1.5px solid var(--fur-mid);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+    .silomo-avatar-lg { width: 96px; height: 96px; }
+
+    .date-divider {
+      align-self: center;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      background: rgba(165, 214, 167, 0.4);
+      padding: 3px 14px;
+      border-radius: 20px;
+      margin: 4px 0 8px;
+      font-weight: 600;
+    }
+
+    #status-msg {
+      display: none;
+      text-align: center;
+      font-size: 0.83rem;
+      color: #1b5e20;
+      background: #c8e6c9;
+      padding: 9px 16px;
+      border-top: 1px solid #a5d6a7;
+      font-weight: 600;
+    }
+
+    .input-area {
+      display: flex;
+      align-items: center;
+      padding: 10px 14px;
+      background: var(--warm-white);
+      border-top: 1.5px solid var(--fur-mid);
+      gap: 10px;
+    }
+    .input-area input {
+      flex: 1;
+      padding: 11px 18px;
+      border: 1.5px solid var(--fur-mid);
+      border-radius: 24px;
+      font-size: 0.95rem;
+      font-family: 'Noto Sans TC', sans-serif;
+      background: var(--bg-chat);
+      outline: none;
+      color: var(--text-dark);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .input-area input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(56, 142, 60, 0.12); }
+    .input-area input:disabled { background: var(--fur-light); cursor: not-allowed; color: var(--text-muted); }
+
+    #send-btn {
+      width: 44px; height: 44px;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      font-size: 17px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.18s, transform 0.1s, box-shadow 0.18s;
+      box-shadow: 0 3px 10px rgba(56, 142, 60, 0.35);
+      flex-shrink: 0;
+    }
+    #send-btn:hover  { background: var(--primary-dark); }
+    #send-btn:active { transform: scale(0.92); }
+    #send-btn:disabled { background: var(--fur-mid); box-shadow: none; cursor: not-allowed; }
+  </style>
+</head>
+<body>
+
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="silomo" viewBox="0 0 100 100">
+    <circle cx="50" cy="52" r="46" fill="#a5d6a7" opacity="0.25"/>
+    <polygon points="12,40 18,12 38,28" fill="#fcfdfd"/>
+    <polygon points="88,40 82,12 62,28" fill="#fcfdfd"/>
+    <polygon points="18,36 22,20 32,28" fill="#f2d5d5"/>
+    <polygon points="82,36 78,20 68,28" fill="#f2d5d5"/>
+    <ellipse cx="50" cy="56" rx="44" ry="36" fill="#ffffff"/>
+    <ellipse cx="25" cy="65" rx="14" ry="12" fill="#ffffff"/>
+    <ellipse cx="75" cy="65" rx="14" ry="12" fill="#ffffff"/>
+    <circle cx="34" cy="52" r="8.5" fill="#2a1a08"/>
+    <circle cx="66" cy="52" r="8.5" fill="#2a1a08"/>
+    <circle cx="34" cy="52" r="7.5" fill="#c48a21"/>
+    <circle cx="66" cy="52" r="7.5" fill="#c48a21"/>
+    <ellipse cx="34" cy="52" rx="3" ry="5.5" fill="#1a0f00"/>
+    <ellipse cx="66" cy="52" rx="3" ry="5.5" fill="#1a0f00"/>
+    <circle cx="36" cy="49" r="2" fill="#ffffff"/>
+    <circle cx="68" cy="49" r="2" fill="#ffffff"/>
+    <path d="M 22 45 L 45 51 L 45 35 L 22 35 Z" fill="#ffffff"/>
+    <path d="M 78 45 L 55 51 L 55 35 L 78 35 Z" fill="#ffffff"/>
+    <polygon points="46,65 54,65 50,69" fill="#eeabaa"/>
+    <line x1="50" y1="69" x2="50" y2="73" stroke="#d6a3a3" stroke-width="1.5"/>
+    <path d="M 43 75 Q 50 78 50 73" stroke="#d6a39d" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <path d="M 57 75 Q 50 78 50 73" stroke="#d6a39d" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <path d="M 20 85 Q 50 96 80 85" stroke="#e6eae8" stroke-width="2" fill="none"/>
+    <path d="M 30 68 Q 15 70 5 82" stroke="#e0e6e3" stroke-width="1.5" fill="none"/>
+    <path d="M 30 73 Q 15 76 8 88" stroke="#e0e6e3" stroke-width="1.5" fill="none"/>
+    <path d="M 70 68 Q 85 70 95 82" stroke="#e0e6e3" stroke-width="1.5" fill="none"/>
+    <path d="M 70 73 Q 85 76 92 88" stroke="#e0e6e3" stroke-width="1.5" fill="none"/>
+  </symbol>
+</svg>
+
+<div id="login-screen">
+  <div class="login-hero">
+    <svg class="silomo-avatar-lg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <use href="#silomo"/>
+    </svg>
+    <h1>Chat.Silomo<br><span>Climate.Change</span></h1>
+    <p>你的氣候探究夥伴・Silomo老師 🐾</p>
+  </div>
+
+  <span class="field-label">年級</span>
+  <div class="btn-group" id="grade-group">
+    <button class="sel-btn" onclick="selectGrade(this,3)">3年級</button>
+    <button class="sel-btn" onclick="selectGrade(this,4)">4年級</button>
+    <button class="sel-btn" onclick="selectGrade(this,5)">5年級</button>
+    <button class="sel-btn" onclick="selectGrade(this,6)">6年級</button>
+  </div>
+
+  <span class="field-label">班級</span>
+  <div class="btn-group" id="class-group">
+    <button class="sel-btn" onclick="selectClass(this,1)">1班</button>
+    <button class="sel-btn" onclick="selectClass(this,2)">2班</button>
+    <button class="sel-btn" onclick="selectClass(this,3)">3班</button>
+    <button class="sel-btn" onclick="selectClass(this,4)">4班</button>
+    <button class="sel-btn" onclick="selectClass(this,5)">5班</button>
+  </div>
+
+  <span class="field-label">座號</span>
+  <div class="seat-group" id="seat-group"></div>
+
+  <span class="field-label">姓名</span>
+  <input class="name-input" type="text" id="studentName" placeholder="例如:王小明">
+
+  <span class="field-label">使用須知</span>
+  <div class="checkbox-group">
+    <label class="checkbox-label">
+      <input type="checkbox" id="rule1"> 我同意遵守數位學習規範，發言保持禮貌。
+    </label>
+    <label class="checkbox-label">
+      <input type="checkbox" id="rule2"> 我同意將學習歷程作為教學與探究活動使用。
+    </label>
+  </div>
+
+  <button id="login-btn" onclick="startChat()">🐾 進入 Chat Silomo</button>
+</div>
+
+<div id="chat-screen">
+  <div class="chat-header">
+    <svg class="silomo-avatar-sm" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <use href="#silomo"/>
+    </svg>
+    <div class="header-name-block">
+      <div class="header-title">Chat.Silomo <span>Climate</span></div>
+      <div class="header-sub" id="display-user"></div>
+    </div>
+    <div class="turn-badge" id="turn-badge">第 1 / 3 次</div>
+  </div>
+
+  <div id="chat-history">
+    <div class="date-divider">✦ 氣候變遷・探究任務開始 ✦</div>
+  </div>
+
+  <div id="status-msg"></div>
+
+  <div class="input-area">
+    <input type="text" id="chat-input" placeholder="請輸入您的問題…">
+    <button id="send-btn" onclick="sendMessage()">➤</button>
+  </div>
+</div>
+
+<script>
+  let selectedGrade = 0;
+  let selectedClass = 0;
+  let selectedSeat  = 0;
+  let userInfo = {};
+  let turnCount = 1;
+  let conversationHistory = [];
+  const MAX_TURNS = 3;
+
+  // 後端 Render API 網址 (請替換為您 Python Flask/FastAPI 實際的 endpoint)
+  const PYTHON_API_URL = "https://your-python-app.onrender.com/api/chat"; 
+
+  (function buildSeats() {
+    const g = document.getElementById('seat-group');
+    for (let i = 1; i <= 34; i++) {
+      const btn = document.createElement('button');
+      btn.className = 'seat-btn';
+      btn.textContent = i;
+      btn.onclick = () => selectSeat(btn, i);
+      g.appendChild(btn);
+    }
+  })();
+
+  function selectGrade(btn, val) {
+    document.querySelectorAll('#grade-group .sel-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    selectedGrade = val;
+  }
+  function selectClass(btn, val) {
+    document.querySelectorAll('#class-group .sel-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    selectedClass = val;
+  }
+  function selectSeat(btn, val) {
+    document.querySelectorAll('#seat-group .seat-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    selectedSeat = val;
+  }
+
+  function formatClassNum() {
+    return `${selectedGrade}0${selectedClass}`;
+  }
+
+  function startChat() {
+    const n = document.getElementById('studentName').value.trim();
+    const r1 = document.getElementById('rule1').checked;
+    const r2 = document.getElementById('rule2').checked;
+
+    if (!selectedGrade) { alert('請選擇年級！'); return; }
+    if (!selectedClass) { alert('請選擇班級！'); return; }
+    if (!selectedSeat)  { alert('請選擇座號！'); return; }
+    if (!n)             { alert('請輸入姓名！'); return; }
+    if (!r1 || !r2)     { alert('請閱讀並勾選兩項「使用須知」！'); return; }
+
+    const classNum = formatClassNum();
+    userInfo = { classNum, seatNum: selectedSeat, studentName: n };
+    document.getElementById('display-user').innerText = `${classNum} 班・${selectedSeat} 號・${n}`;
+
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('chat-screen').style.display  = 'flex';
+
+    addAiBubble('<p>你好！我是 <b>Silomo</b></p><p>準備好探索氣候變遷了嗎？本次任務有 <b>3 次</b>對話機會，請開始發問吧！</p>', true);
+    document.getElementById('chat-input').focus();
+  }
+
+  function addAiBubble(content, isHTML) {
+    const history = document.getElementById('chat-history');
+    const row = document.createElement('div');
+    row.className = 'bubble-row';
+
+    const svgNS = 'http://www.w3.org/2000/svg';
+    const svg = document.createElementNS(svgNS, 'svg');
+    svg.setAttribute('class', 'silomo-avatar-sm');
+    svg.setAttribute('viewBox', '0 0 100 100');
+    const use = document.createElementNS(svgNS, 'use');
+    use.setAttributeNS('http://www.w3.org/1999/xlink', 'href', '#silomo');
+    use.setAttribute('href', '#silomo');
+    svg.appendChild(use);
+
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble ai-bubble';
+    if (isHTML) bubble.innerHTML = content;
+    else        bubble.innerText  = content;
+
+    row.appendChild(svg);
+    row.appendChild(bubble);
+    history.appendChild(row);
+    history.scrollTop = history.scrollHeight;
+    return row;
+  }
+
+  function addUserBubble(content) {
+    const history = document.getElementById('chat-history');
+    const row = document.createElement('div');
+    row.className = 'bubble-row user-row';
+
+    const avatar = document.createElement('div');
+    avatar.className = 'user-avatar';
+    avatar.textContent = '🐾';
+
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble user-bubble';
+    bubble.innerText = content;
+
+    row.appendChild(avatar);
+    row.appendChild(bubble);
+    history.appendChild(row);
+    history.scrollTop = history.scrollHeight;
+  }
+
+  function addLoadingBubble() {
+    const history = document.getElementById('chat-history');
+    const row = document.createElement('div');
+    row.className = 'bubble-row';
+
+    const svgNS = 'http://www.w3.org/2000/svg';
+    const svg = document.createElementNS(svgNS, 'svg');
+    svg.setAttribute('class', 'silomo-avatar-sm');
+    svg.setAttribute('viewBox', '0 0 100 100');
+    const use = document.createElementNS(svgNS, 'use');
+    use.setAttribute('href', '#silomo');
+    svg.appendChild(use);
+
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble ai-bubble typing-indicator';
+    bubble.innerText = 'Silomo 正在思考中…';
+
+    row.appendChild(svg);
+    row.appendChild(bubble);
+    history.appendChild(row);
+    history.scrollTop = history.scrollHeight;
+    return row;
+  }
+
+  function updateBadge() {
+    const badge = document.getElementById('turn-badge');
+    if (turnCount > MAX_TURNS) {
+      badge.textContent = '已結束';
+      badge.style.background = '#c8e6c9';
+      badge.style.color = '#1b5e20';
+    } else {
+      badge.textContent = `第 ${turnCount} / ${MAX_TURNS} 次`;
+    }
+  }
+
+  // 修改為 Fetch API 以呼叫 Python Render 後端
+  async function sendMessage() {
+    if (turnCount > MAX_TURNS) return;
+
+    const input   = document.getElementById('chat-input');
+    const sendBtn = document.getElementById('send-btn');
+    const msg     = input.value.trim();
+    if (!msg) return;
+
+    input.value = '';
+    input.disabled   = true;
+    sendBtn.disabled = true;
+
+    addUserBubble(msg);
+    const loadingRow = addLoadingBubble();
+
+    conversationHistory.push({ role: "user", parts: msg });
+
+    try {
+      const response = await fetch(PYTHON_API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userInfo: userInfo,
+          message: msg,
+          turnCount: turnCount,
+          history: conversationHistory
+        })
+      });
+
+      const res = await response.json();
+      loadingRow.remove();
+
+      if (res.status === 'success') {
+        let finalHtml = "";
+        try {
+          const aiData = JSON.parse(res.ai_response);
+          if (aiData.summary) finalHtml += `<p>${aiData.summary}</p>`;
+          if (aiData.details && Array.isArray(aiData.details) && aiData.details.length > 0) {
+            finalHtml += "<ul>";
+            aiData.details.forEach(item => {
+              if (item.point && item.description) {
+                finalHtml += `<li><b>${item.point}：</b>${item.description}</li>`;
+              }
+            });
+            finalHtml += "</ul>";
+          }
+          if (!finalHtml) finalHtml = res.ai_response.replace(/\n/g, '<br>');
+        } catch (e) {
+          finalHtml = res.ai_response.replace(/\n/g, '<br>');
+        }
+
+        addAiBubble(finalHtml, true);
+        conversationHistory.push({ role: "model", parts: res.ai_response });
+
+        turnCount++;
+        updateBadge();
+
+        if (turnCount > MAX_TURNS) {
+          const statusBox = document.getElementById('status-msg');
+          statusBox.innerText = '⚠️ 已達到本次任務的 3 次互動上限，無法繼續發問。';
+          statusBox.style.display = 'block';
+          input.placeholder = '互動已結束';
+        } else {
+          input.disabled   = false;
+          sendBtn.disabled = false;
+          input.focus();
+        }
+      } else {
+        throw new Error(res.message || "發生未知錯誤");
+      }
+    } catch (err) {
+      loadingRow.remove();
+      addAiBubble('系統連線失敗，請確認後台伺服器狀態。', false);
+      conversationHistory.pop();
+      input.disabled   = false;
+      sendBtn.disabled = false;
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('chat-input')
+      .addEventListener('keydown', e => {
+        if (e.key === 'Enter' && !e.shiftKey) sendMessage();
+      });
+  });
+</script>
+</body>
+</html>
