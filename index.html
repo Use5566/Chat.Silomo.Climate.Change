@@ -9,7 +9,7 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      var(--bg-dark):       #c2d4c9;
+      --bg-dark:       #c2d4c9;
       --bg-chat:       #dce6e0;
       --warm-white:    #ffffff;
       --primary:       #388e3c;
@@ -458,7 +458,7 @@
       <div class="header-title">Chat.Silomo <span>Climate</span></div>
       <div class="header-sub" id="display-user"></div>
     </div>
-    <div class="turn-badge" id="turn-badge">第 1 / 3 次</div>
+    <div class="turn-badge" id="turn-badge">第 1 / 4 次</div>
   </div>
 
   <div id="chat-history">
@@ -480,9 +480,9 @@
   let userInfo = {};
   let turnCount = 1;
   let conversationHistory = [];
-  const MAX_TURNS = 3;
+  const MAX_TURNS = 4; // 互動次數已修改為 4 次
 
-  // 後端 Render API 網址 (請替換為您 Python Flask/FastAPI 實際的 endpoint)
+  // 後端 Render API 網址 (請替換為您 Python 實際的 endpoint)
   const PYTHON_API_URL = "https://your-python-app.onrender.com/api/chat"; 
 
   (function buildSeats() {
@@ -534,7 +534,7 @@
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('chat-screen').style.display  = 'flex';
 
-    addAiBubble('<p>你好！我是 <b>Silomo</b></p><p>準備好探索氣候變遷了嗎？本次任務有 <b>3 次</b>對話機會，請開始發問吧！</p>', true);
+    addAiBubble('<p>你好！我是 <b>Silomo</b></p><p>準備好探索氣候變遷了嗎？本次任務有 <b>4 次</b>對話機會，請開始發問吧！</p>', true);
     document.getElementById('chat-input').focus();
   }
 
@@ -618,7 +618,6 @@
     }
   }
 
-  // 修改為 Fetch API 以呼叫 Python Render 後端
   async function sendMessage() {
     if (turnCount > MAX_TURNS) return;
 
@@ -678,7 +677,7 @@
 
         if (turnCount > MAX_TURNS) {
           const statusBox = document.getElementById('status-msg');
-          statusBox.innerText = '⚠️ 已達到本次任務的 3 次互動上限，無法繼續發問。';
+          statusBox.innerText = '⚠️ 已達到本次任務的 4 次互動上限，無法繼續發問。';
           statusBox.style.display = 'block';
           input.placeholder = '互動已結束';
         } else {
